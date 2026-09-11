@@ -1,44 +1,35 @@
-import requests
+import os
+from functools import lru_cache
+
+import openrouteservice
+from dotenv import load_dotenv
+
+load_dotenv()
+
+client = openrouteservice.Client(
+    key=os.getenv("OPENROUTESERVICE_API_KEY")
+)
 
 
+@lru_cache(maxsize=128)
 def get_coordinates(city: str):
-    """
-    Returns latitude and longitude for a city.
-    """
+    """Return latitude and longitude for a city using OpenRouteService."""
 
-    url = "https://nominatim.openstreetmap.org/search"
+    if not os.getenv("OPENROUTESERVICE_API_KEY"):
+        raise RuntimeError("OPENROUTESERVICE_API_KEY is not configured.")
 
-    params = {
-        "q": city,
-        "format": "json",
-        "limit": 1
-    }
+    result = client.pelias_search(text=city)
+    features = result.get("features", [])
 
-    headers = {
-        "User-Agent": "AI Trip Planner"
-    }
+    if not features:
+        raise RuntimeError(f"Could not find coordinates for '{city}'.")
 
-    response = requests.get(
-        url,
-        params=params,
-        headers=headers,
-        timeout=30,
-    )
+    coordinates = features[0].get("geometry", {}).get("coordinates", [])
 
-    response.raise_for_status()
-
-    try:
-        data = response.json()
-    except requests.exceptions.JSONDecodeError as exc:
-        raise RuntimeError(
-            "The geocoding service returned an invalid response. "
-            "Please try again shortly."
-        ) from exc
-
-    if not data:
+    if len(coordinates) < 2:
         raise RuntimeError(f"Could not find coordinates for '{city}'.")
 
     return {
-        "lat": float(data[0]["lat"]),
-        "lon": float(data[0]["lon"])
+        "lat": float(coordinates[1]),
+        "lon": float(coordinates[0]),
     }
