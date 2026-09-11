@@ -7,4 +7,5 @@ pydantic
 sqlalchemy
 openai
 requests
+reportlab
 langgraph langchain-core
