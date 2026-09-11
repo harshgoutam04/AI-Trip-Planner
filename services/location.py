@@ -21,13 +21,22 @@ def get_coordinates(city: str):
     response = requests.get(
         url,
         params=params,
-        headers=headers
+        headers=headers,
+        timeout=30,
     )
 
-    data = response.json()
+    response.raise_for_status()
+
+    try:
+        data = response.json()
+    except requests.exceptions.JSONDecodeError as exc:
+        raise RuntimeError(
+            "The geocoding service returned an invalid response. "
+            "Please try again shortly."
+        ) from exc
 
     if not data:
-        return None
+        raise RuntimeError(f"Could not find coordinates for '{city}'.")
 
     return {
         "lat": float(data[0]["lat"]),
