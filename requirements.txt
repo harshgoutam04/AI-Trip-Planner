@@ -8,4 +8,5 @@ sqlalchemy
 openai
 requests
 reportlab
-langgraph langchain-core
+langgraph
+langchain-core
