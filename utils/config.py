@@ -1,0 +1,15 @@
+import os
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+
+GEOAPIFY_API_KEY = os.getenv("GEOAPIFY_API_KEY")
+
+OPENTRIPMAP_API_KEY = os.getenv("OPENTRIPMAP_API_KEY")
+
+OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY")
+
+FOURSQUARE_API_KEY = os.getenv("FOURSQUARE_API_KEY")

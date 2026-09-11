@@ -1,0 +1,10 @@
+streamlit
+langgraph
+langchain
+langchain-core
+python-dotenv
+pydantic
+sqlalchemy
+openai
+requests
+langgraph langchain-core
