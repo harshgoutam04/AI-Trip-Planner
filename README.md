@@ -110,7 +110,3 @@ Add all required API keys as Render environment variables. Do not upload `.env` 
 - API keys must be stored in environment variables, never in source code.
 - If a key is exposed publicly, revoke it and generate a replacement immediately.
 - `.env`, `venv/`, Python caches, and compiled files are excluded by `.gitignore`.
-
-## License
-
-No license has been specified for this project yet.
